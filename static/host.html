@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Bảng điều khiển máy chủ (Host) để quản lý, bắt đầu và điều phối trò chơi quiz World Cup 2026 thời gian thực.">
+    <title>Bảng Điều Khiển Host - Quiz Arena World Cup 2026</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body style="align-items: center; justify-content: flex-start; padding: 1rem 0;">
+
+    <!-- Host Main Heading -->
+    <header class="logo-container" style="margin-bottom: 0.5rem; margin-top: 1rem;">
+        <h1 class="logo-text" id="host-main-title">Quiz Arena Host</h1>
+        <p class="logo-subtitle">Trang điều khiển máy chủ</p>
+    </header>
+
+    <div class="host-layout">
+        
+        <!-- CỘT CHÍNH: HIỂN THỊ TRẠNG THÁI GAME -->
+        <main class="host-main-card">
+            
+            <!-- 1. MÀN HÌNH CHỜ LOBBY -->
+            <section id="host-lobby" class="view-section active">
+                <div class="host-lobby-header">
+                    <h2>Đang đợi người chơi tham gia</h2>
+                    <p style="color: var(--text-muted); margin-top: 0.5rem;">Người chơi quét mã QR hoặc truy cập đường dẫn bên dưới để tham gia</p>
+                </div>
+
+                <div style="display: flex; flex-wrap: wrap; gap: 1.5rem; justify-content: center; align-items: stretch; margin: 1.5rem 0;">
+                    <!-- Thẻ QR Code -->
+                    <div id="lobby-qr-card" style="background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 16px; padding: 1.2rem; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.8rem; width: 200px; flex-shrink: 0;">
+                        <div id="qrcode" style="background: white; padding: 8px; border-radius: 10px; width: 146px; height: 146px; display: flex; align-items: center; justify-content: center;"></div>
+                        <span id="lobby-join-url" style="font-size: 0.8rem; font-weight: 600; color: var(--accent); word-break: break-all; text-align: center; line-height: 1.2;"></span>
+                    </div>
+                    
+                    <!-- Danh sách người chơi -->
+                    <div style="flex-grow: 1; min-width: 250px; display: flex; flex-direction: column;">
+                        <div class="score-banner" style="margin-bottom: 1rem; padding: 0.75rem;">
+                            <div class="score-item" style="text-align: center;">
+                                <span class="score-label">Đã tham gia</span>
+                                <span id="lobby-count" class="score-val">0</span>
+                            </div>
+                        </div>
+                        <div id="lobby-player-list" class="host-lobby-grid" style="margin: 0; max-height: 200px; flex-grow: 1;">
+                            <!-- Player bubbles will pop in here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="host-action-footer">
+                    <button id="btn-start-game" onclick="startGame()" class="btn-primary" disabled style="opacity: 0.5; pointer-events: none;">Bắt đầu trận đấu</button>
+                </div>
+            </section>
+
+            <!-- 2. MÀN HÌNH CÂU HỎI ĐANG DIỄN RA -->
+            <section id="host-question" class="view-section">
+                <div class="question-header">
+                    <div class="question-counter" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
+                        Câu hỏi <span id="host-q-num">1</span>/<span id="host-q-total">15</span>
+                    </div>
+                    <div class="timer-badge" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
+                        <span>⏱️</span>
+                        <span id="host-timer">20</span>s
+                    </div>
+                </div>
+
+                <div class="progress-bar-container" style="height: 8px;">
+                    <div id="host-timer-progress" class="progress-bar"></div>
+                </div>
+
+                <h2 id="host-q-title" class="question-text" style="font-size: 1.8rem; margin: 1.5rem 0;">Câu hỏi ở đây?</h2>
+                
+                <!-- Hiển thị các đáp án của câu hỏi -->
+                <div class="options-grid" style="pointer-events: none; margin-bottom: 2rem;">
+                    <div class="option-btn opt-a">
+                        <span class="option-prefix">A</span>
+                        <span id="host-opt-a">...</span>
+                    </div>
+                    <div class="option-btn opt-b">
+                        <span class="option-prefix">B</span>
+                        <span id="host-opt-b">...</span>
+                    </div>
+                    <div class="option-btn opt-c">
+                        <span class="option-prefix">C</span>
+                        <span id="host-opt-c">...</span>
+                    </div>
+                    <div class="option-btn opt-d">
+                        <span class="option-prefix">D</span>
+                        <span id="host-opt-d">...</span>
+                    </div>
+                </div>
+
+                <div class="score-banner" style="margin-top: auto;">
+                    <div class="score-item" style="text-align: center;">
+                        <span class="score-label">Đã trả lời</span>
+                        <span id="answered-ratio" class="score-val">0 / 0</span>
+                    </div>
+                </div>
+
+                <div class="host-action-footer" style="margin-top: 1.5rem;">
+                    <button id="btn-end-question" onclick="endQuestionEarly()" class="btn-primary" style="background: #e63946; color: white; box-shadow: 0 4px 15px rgba(230, 57, 70, 0.4);">
+                        Kết thúc câu hỏi sớm
+                    </button>
+                </div>
+            </section>
+
+            <!-- 3. MÀN HÌNH BÁO CÁO CÂU TRẢ LỜI (ANSWER REVEAL) -->
+            <section id="host-reveal" class="view-section">
+                <h2 id="reveal-q-title" style="font-size: 1.5rem; text-align: center; margin-bottom: 1.5rem;">Câu hỏi đã kết thúc</h2>
+
+                <!-- Biểu đồ cột thể hiện kết quả -->
+                <div class="stats-container">
+                    <h3 style="font-size: 1rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 1rem;">
+                        Thống kê câu trả lời
+                    </h3>
+                    <div class="bar-wrapper">
+                        <div class="stat-bar-group">
+                            <span class="stat-label">A</span>
+                            <div class="stat-bar-bg">
+                                <div id="bar-a" class="stat-bar-fill opt-a"></div>
+                                <span id="count-a" class="stat-bar-text">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar-group">
+                            <span class="stat-label">B</span>
+                            <div class="stat-bar-bg">
+                                <div id="bar-b" class="stat-bar-fill opt-b"></div>
+                                <span id="count-b" class="stat-bar-text">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar-group">
+                            <span class="stat-label">C</span>
+                            <div class="stat-bar-bg">
+                                <div id="bar-c" class="stat-bar-fill opt-c"></div>
+                                <span id="count-c" class="stat-bar-text">0</span>
+                            </div>
+                        </div>
+                        <div class="stat-bar-group">
+                            <span class="stat-label">D</span>
+                            <div class="stat-bar-bg">
+                                <div id="bar-d" class="stat-bar-fill opt-d"></div>
+                                <span id="count-d" class="stat-bar-text">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Hiển thị các đáp án của câu hỏi và khoanh vùng đáp án đúng -->
+                <div class="host-answers-reveal">
+                    <div id="reveal-opt-a" class="reveal-option opt-a">
+                        <span class="option-prefix">A</span>
+                        <span id="reveal-text-a">Đáp án A</span>
+                    </div>
+                    <div id="reveal-opt-b" class="reveal-option opt-b">
+                        <span class="option-prefix">B</span>
+                        <span id="reveal-text-b">Đáp án B</span>
+                    </div>
+                    <div id="reveal-opt-c" class="reveal-option opt-c">
+                        <span class="option-prefix">C</span>
+                        <span id="reveal-text-c">Đáp án C</span>
+                    </div>
+                    <div id="reveal-opt-d" class="reveal-option opt-d">
+                        <span class="option-prefix">D</span>
+                        <span id="reveal-text-d">Đáp án D</span>
+                    </div>
+                </div>
+
+                <div class="host-action-footer" style="margin-top: auto; padding-top: 1rem;">
+                    <button id="btn-next-question" onclick="nextQuestion()" class="btn-primary">Câu tiếp theo ➡️</button>
+                </div>
+            </section>
+
+            <!-- 4. MÀN HÌNH KẾT THÚC GAME -->
+            <section id="host-finished" class="view-section">
+                <div style="text-align: center;">
+                    <h2 style="font-size: 2.5rem; font-weight: 800; color: var(--accent); margin-bottom: 0.5rem;">TRẬN ĐẤU KẾT THÚC</h2>
+                    <p style="color: var(--text-muted);">Chúc mừng các nhà vô địch!</p>
+                </div>
+
+                <!-- Bục vinh quang Top 3 -->
+                <div class="podium-container">
+                    <!-- Hạng 2 (Silver) -->
+                    <div class="podium-step silver">
+                        <div id="podium-2-name" class="player-name">Hạng 2</div>
+                        <div id="podium-2-score" class="player-score">--</div>
+                        <div class="podium-rank">2</div>
+                    </div>
+                    <!-- Hạng 1 (Gold) -->
+                    <div class="podium-step gold">
+                        <div id="podium-1-name" class="player-name">Hạng 1</div>
+                        <div id="podium-1-score" class="player-score">--</div>
+                        <div class="podium-rank">1</div>
+                    </div>
+                    <!-- Hạng 3 (Bronze) -->
+                    <div class="podium-step bronze">
+                        <div id="podium-3-name" class="player-name">Hạng 3</div>
+                        <div id="podium-3-score" class="player-score">--</div>
+                        <div class="podium-rank">3</div>
+                    </div>
+                </div>
+
+                <div class="host-action-footer">
+                    <button id="btn-reset-game" onclick="resetGame()" class="btn-primary" style="background: rgba(255,255,255,0.1); color: white; border: 1px solid rgba(255,255,255,0.25); box-shadow: none;">
+                        Khởi động lại phòng chơi (Reset)
+                    </button>
+                </div>
+            </section>
+
+            <!-- 5. MÀN HÌNH LỖI KẾT NỐI -->
+            <section id="host-error" class="view-section">
+                <div style="text-align: center; padding: 3rem 0;">
+                    <div class="feedback-icon">⚠️</div>
+                    <h2 class="feedback-title" style="color: #ff5252; margin-bottom: 1.5rem;">Lỗi Kết Nối Máy Chủ</h2>
+                    <p id="host-error-message" style="color: var(--text-muted); margin-bottom: 2rem;">Bảng điều khiển đã bị mất kết nối.</p>
+                    <button onclick="window.location.reload()" class="btn-primary">Tải lại trang</button>
+                </div>
+            </section>
+        </main>
+
+        <!-- CỘT BÊN: BẢNG XẾP HẠNG TRỰC TIẾP -->
+        <aside class="host-sidebar-card">
+            <h3 style="font-size: 1.1rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.75rem; margin-bottom: 1rem; text-align: center;">
+                Bảng xếp hạng trực tiếp
+            </h3>
+            
+            <div id="sidebar-leaderboard-empty" style="text-align: center; color: var(--text-muted); font-size: 0.95rem; margin: auto 0; padding: 2rem 0;">
+                Chưa có dữ liệu xếp hạng. Đang chờ người chơi trả lời...
+            </div>
+            
+            <div id="sidebar-leaderboard-list" class="leaderboard-list" style="max-height: none; flex-grow: 1; margin: 0; display: none;">
+                <!-- Leaderboard items will render here -->
+            </div>
+        </aside>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="/static/host.js"></script>
+</body>
+</html>

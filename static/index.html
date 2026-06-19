@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Trang chơi quiz nhiều người chơi thời gian thực World Cup 2026. Tham gia trả lời câu hỏi và đua top bảng xếp hạng cùng bạn bè.">
+    <title>Đấu Trường World Cup 2026 - Trò Chơi Quiz Thời Gian Thực</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+    <main class="glass-container">
+        <!-- Logo -->
+        <header class="logo-container">
+            <h1 class="logo-text" id="main-logo-heading">Quiz Arena</h1>
+            <p class="logo-subtitle">World Cup 2026</p>
+        </header>
+
+        <!-- 1. MÀN HÌNH ĐĂNG KÝ THAM GIA -->
+        <section id="view-join" class="view-section active">
+            <form id="join-form" onsubmit="handleJoinSubmit(event)">
+                <div class="form-group">
+                    <label for="player-name" class="form-label">Tên của bạn</label>
+                    <input type="text" id="player-name" class="input-glow" placeholder="Nhập tên..." maxlength="15" required autocomplete="off">
+                </div>
+                <button type="submit" id="btn-join-room" class="btn-primary">Tham gia phòng</button>
+            </form>
+        </section>
+
+        <!-- 2. MÀN HÌNH CHỜ (LOBBY) -->
+        <section id="view-lobby" class="view-section">
+            <h2 style="text-align: center; margin-bottom: 1rem; font-weight: 600;">Bạn đã sẵn sàng?</h2>
+            <p style="text-align: center; color: var(--text-muted);">Đang đợi Host bắt đầu trận đấu...</p>
+            
+            <div class="pulse-status">
+                <div class="pulse-dot"></div>
+                <span id="lobby-players-count">0</span> người chơi đang online
+            </div>
+            
+            <div class="score-banner" style="margin-top: 1.5rem;">
+                <div class="score-item" style="text-align: center;">
+                    <span class="score-label">Tài khoản</span>
+                    <span id="lobby-my-name" class="score-val">-</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. MÀN HÌNH CÂU HỎI -->
+        <section id="view-question" class="view-section">
+            <div class="question-header">
+                <div class="question-counter">Câu <span id="question-num">1</span>/<span id="question-total">15</span></div>
+                <div class="timer-badge">
+                    <span style="font-size: 1.1rem;">⏱️</span>
+                    <span id="question-timer">20</span>s
+                </div>
+            </div>
+            
+            <!-- Progress Bar -->
+            <div class="progress-bar-container">
+                <div id="question-progress" class="progress-bar"></div>
+            </div>
+            
+            <h2 id="question-title" class="question-text">Câu hỏi sẽ hiển thị ở đây?</h2>
+            
+            <div class="options-grid">
+                <button onclick="submitAnswer('A')" id="btn-opt-a" class="option-btn opt-a">
+                    <span class="option-prefix">A</span>
+                    <span id="text-opt-a">Đáp án A</span>
+                </button>
+                <button onclick="submitAnswer('B')" id="btn-opt-b" class="option-btn opt-b">
+                    <span class="option-prefix">B</span>
+                    <span id="text-opt-b">Đáp án B</span>
+                </button>
+                <button onclick="submitAnswer('C')" id="btn-opt-c" class="option-btn opt-c">
+                    <span class="option-prefix">C</span>
+                    <span id="text-opt-c">Đáp án C</span>
+                </button>
+                <button onclick="submitAnswer('D')" id="btn-opt-d" class="option-btn opt-d">
+                    <span class="option-prefix">D</span>
+                    <span id="text-opt-d">Đáp án D</span>
+                </button>
+            </div>
+            
+            <p id="wait-message" style="display: none; text-align: center; margin-top: 1.5rem; color: var(--text-muted); font-style: italic;">
+                Đã ghi nhận đáp án. Đang chờ người chơi khác...
+            </p>
+        </section>
+
+        <!-- 4. MÀN HÌNH KẾT QUẢ CÂU HỎI -->
+        <section id="view-feedback" class="view-section">
+            <div class="feedback-screen">
+                <div id="feedback-icon" class="feedback-icon">🎉</div>
+                <h2 id="feedback-title" class="feedback-title">Chính xác!</h2>
+                
+                <p class="points-earned">Nhận được <span id="feedback-points">0</span> điểm</p>
+                
+                <p id="correct-answer-reveal" style="margin-bottom: 2rem; color: var(--text-muted); font-size: 0.95rem; display: none;">
+                    Đáp án đúng: <strong id="correct-answer-text" style="color: #00CC66;"></strong>
+                </p>
+
+                <div class="score-banner">
+                    <div class="score-item">
+                        <span class="score-label">Hạng của bạn</span>
+                        <span id="feedback-rank" class="score-val">--</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Tổng điểm</span>
+                        <span id="feedback-score" class="score-val">0</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 5. MÀN HÌNH KẾT THÚC GAME -->
+        <section id="view-gameover" class="view-section">
+            <div class="feedback-screen" style="padding-bottom: 0;">
+                <div class="feedback-icon">🏆</div>
+                <h2 class="feedback-title" style="color: var(--accent); margin-bottom: 1.5rem;">Hoàn Thành!</h2>
+                
+                <div class="score-banner" style="margin-bottom: 2rem;">
+                    <div class="score-item">
+                        <span class="score-label">Hạng chung cuộc</span>
+                        <span id="gameover-rank" class="score-val">--</span>
+                    </div>
+                    <div class="score-item">
+                        <span class="score-label">Điểm chung cuộc</span>
+                        <span id="gameover-score" class="score-val">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.75rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 0.5rem;">
+                Bảng xếp hạng Top 5
+            </h3>
+            <div id="gameover-leaderboard" class="leaderboard-list">
+                <!-- Leaderboard items will render here -->
+            </div>
+            
+            <button onclick="resetClientSession()" id="btn-replay" class="btn-primary" style="margin-top: 1rem;">Chơi lại</button>
+        </section>
+
+        <!-- 6. MÀN HÌNH LỖI / DISCONNECT -->
+        <section id="view-error" class="view-section">
+            <div style="text-align: center; padding: 2rem 0;">
+                <div class="feedback-icon">⚠️</div>
+                <h2 class="feedback-title" style="color: #ff5252; margin-bottom: 1rem;">Lỗi Kết Nối</h2>
+                <p id="error-message" style="color: var(--text-muted); margin-bottom: 2rem;">Không thể kết nối đến máy chủ.</p>
+                <button onclick="attemptReconnect()" id="btn-reconnect" class="btn-primary">Thử kết nối lại</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="/static/player.js"></script>
+</body>
+</html>
