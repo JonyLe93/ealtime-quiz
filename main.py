@@ -1,3 +1,4 @@
+import os
 import uuid
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
@@ -9,16 +10,18 @@ app = FastAPI(title="Real-time Multiplayer Quiz App")
 # Initialize the shared game manager
 manager = GameStateManager()
 
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
 # Serve static files
-app.mount("/static", StaticFiles(directory="static"), name="static")
+app.mount("/static", StaticFiles(directory=os.path.join(BASE_DIR, "static")), name="static")
 
 @app.get("/")
 async def get_player_page():
-    return FileResponse("static/index.html")
+    return FileResponse(os.path.join(BASE_DIR, "static", "index.html"))
 
 @app.get("/host")
 async def get_host_page():
-    return FileResponse("static/host.html")
+    return FileResponse(os.path.join(BASE_DIR, "static", "host.html"))
 
 @app.websocket("/ws/player")
 async def websocket_player(websocket: WebSocket):
