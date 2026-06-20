@@ -32,14 +32,20 @@ function generateJoinQR() {
     joinUrlEl.textContent = joinUrl;
     
     qrContainer.innerHTML = "";
-    new QRCode(qrContainer, {
-        text: joinUrl,
-        width: 130,
-        height: 130,
-        colorDark: "#121240",
-        colorLight: "#ffffff",
-        correctLevel: QRCode.CorrectLevel.H
-    });
+    try {
+        new QRCode(qrContainer, {
+            text: joinUrl,
+            width: 130,
+            height: 130,
+            colorDark: "#121240",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.H
+        });
+    } catch (e) {
+        console.error("QRCode library failed to load:", e);
+        qrContainer.style.background = "rgba(255, 255, 255, 0.05)";
+        qrContainer.innerHTML = "<p style='font-size: 0.75rem; color: var(--text-muted); text-align: center; padding: 10px; line-height: 1.3;'>Không thể tải QR.<br>Vui lòng chia sẻ liên kết bên dưới.</p>";
+    }
 }
 
 function showView(viewId) {
