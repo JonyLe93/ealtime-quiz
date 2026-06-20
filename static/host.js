@@ -407,3 +407,46 @@ function escapeHtml(str) {
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
 }
+
+// Background Music Control
+let bgMusic = null;
+let isMusicPlaying = false;
+
+function toggleMusic() {
+    const musicBtn = document.getElementById("music-btn");
+    
+    if (!bgMusic) {
+        // Initialize background music
+        bgMusic = new Audio('/static/music.mp3');
+        bgMusic.loop = true;
+        bgMusic.volume = 0.25;
+        
+        // Handle loading error gracefully
+        bgMusic.onerror = () => {
+            console.warn("Không tìm thấy tệp nhạc nền /static/music.mp3. Vui lòng thêm tệp nhạc mp3 vào thư mục static để kích hoạt nhạc nền.");
+            alert("Để sử dụng tính năng này, vui lòng tải tệp nhạc nền ( định dạng .mp3 ) đặt tên là 'music.mp3' vào thư mục static của dự án!");
+            isMusicPlaying = false;
+            musicBtn.textContent = "🔇";
+            bgMusic = null;
+        };
+    }
+    
+    if (isMusicPlaying) {
+        if (bgMusic) bgMusic.pause();
+        isMusicPlaying = false;
+        musicBtn.textContent = "🔇";
+    } else {
+        if (bgMusic) {
+            bgMusic.play()
+                .then(() => {
+                    isMusicPlaying = true;
+                    musicBtn.textContent = "🔊";
+                })
+                .catch(err => {
+                    console.error("Lỗi phát nhạc:", err);
+                    isMusicPlaying = false;
+                    musicBtn.textContent = "🔇";
+                });
+        }
+    }
+}
