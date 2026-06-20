@@ -183,6 +183,66 @@ QUESTIONS = [
         },
         "correct": "C",
         "time_limit": 20
+    },
+    {
+        "id": 16,
+        "question": "Bài hát chính thức nằm trong album World Cup 2026 do nữ ca sĩ Shakira hợp tác biểu diễn có tên là gì?",
+        "options": {
+            "A": "Waka Waka",
+            "B": "Stronger",
+            "C": "La La La",
+            "D": "We Are One"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 17,
+        "question": "Tính đến hết lượt trận 1 vòng bảng, những cầu thủ nào đang dẫn đầu danh sách ghi bàn của World Cup 2026 với 3 bàn thắng?",
+        "options": {
+            "A": "Kylian Mbappé và Erling Haaland",
+            "B": "Lionel Messi và Jonathan David",
+            "C": "Harry Kane và Kai Havertz",
+            "D": "Folarin Balogun và Cristiano Ronaldo"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 18,
+        "question": "Trận khai mạc kịch tính giữa Mexico và Nam Phi tại bảng A đã chứng kiến trọng tài rút ra tổng cộng bao nhiêu tấm thẻ đỏ?",
+        "options": {
+            "A": "1 thẻ đỏ",
+            "B": "2 thẻ đỏ",
+            "C": "3 thẻ đỏ",
+            "D": "4 thẻ đỏ"
+        },
+        "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 19,
+        "question": "Quốc kỳ của quốc gia nào tham dự ở bảng H nổi bật với nền màu xanh lá cây, ở giữa có hình một thanh kiếm màu trắng nằm ngang dưới dòng chữ tiếng Ả Rập?",
+        "options": {
+            "A": "Saudi Arabia",
+            "B": "Morocco",
+            "C": "Algeria",
+            "D": "Qatar"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 20,
+        "question": "Quốc kỳ của nước chủ nhà Canada nổi bật với ba sọc đứng (Đỏ - Trắng - Đỏ) và hình biểu tượng gì màu đỏ nằm chính giữa?",
+        "options": {
+            "A": "Ngôi sao năm cánh",
+            "B": "Lá phong",
+            "C": "Con chim hải âu",
+            "D": "Thanh gươm thần"
+        },
+        "correct": "B",
+        "time_limit": 20
     }
 ]
 
