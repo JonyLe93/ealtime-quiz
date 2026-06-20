@@ -730,3 +730,8 @@ body {
     color: #121240;
     font-weight: 800;
 }
+
+body.host-body {
+    background: linear-gradient(rgba(18, 18, 64, 0.82), rgba(18, 18, 64, 0.85)), url('/static/background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
