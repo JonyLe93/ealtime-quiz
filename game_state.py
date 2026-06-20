@@ -72,127 +72,7 @@ QUESTIONS = [
     },
     {
         "id": 6,
-        "question": "Bài hát chính thức 'Waka Waka (This Time for Africa)' của kỳ World Cup 2010 do nữ ca sĩ nào thể hiện?",
-        "options": {
-            "A": "Shakira",
-            "B": "Rihanna",
-            "C": "Beyonce",
-            "D": "Adele"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 7,
-        "question": "Ca khúc 'The Cup of Life' (La Copa de la Vida) - bài hát World Cup kinh điển năm 1998 do nam ca sĩ nào trình bày?",
-        "options": {
-            "A": "Ricky Martin",
-            "B": "Enrique Iglesias",
-            "C": "Pitbull",
-            "D": "Marc Anthony"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 8,
-        "question": "Bài hát chính thức nằm trong album World Cup 2026 do nữ ca sĩ Shakira hợp tác biểu diễn có tên là gì?",
-        "options": {
-            "A": "Waka Waka",
-            "B": "La La La",
-            "C": "Stronger",
-            "D": "We Are One"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 9,
-        "question": "Bài hát chính thức 'We Are One (Ole Ola)' của World Cup 2014 tại Brazil do Pitbull, Jennifer Lopez và nghệ sĩ nào thể hiện?",
-        "options": {
-            "A": "Shakira",
-            "B": "Claudia Leitte",
-            "C": "Rihanna",
-            "D": "Beyonce"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 10,
-        "question": "Bản tình ca bóng đá huyền thoại 'Un'estate italiana' (Mùa hè nước Ý) - bài hát chính thức của World Cup 1990 do cặp song ca nào thể hiện?",
-        "options": {
-            "A": "Gianna Nannini & Edoardo Bennato",
-            "B": "Andrea Bocelli & Sarah Brightman",
-            "C": "Luciano Pavarotti & Jose Carreras",
-            "D": "Eros Ramazzotti & Laura Pausini"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 11,
-        "question": "Quốc gia nào đăng cai kỳ World Cup đầu tiên vào năm 1930?",
-        "options": {
-            "A": "Brazil",
-            "B": "Uruguay",
-            "C": "Argentina",
-            "D": "Pháp"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 12,
-        "question": "Cúp vàng FIFA World Cup hiện tại được chế tác chủ yếu bằng chất liệu gì?",
-        "options": {
-            "A": "Vàng 18 carat",
-            "B": "Vàng ròng nguyên chất",
-            "C": "Bạc mạ vàng",
-            "D": "Bạch kim"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 13,
-        "question": "Đội tuyển quốc gia nào vô địch World Cup nhiều lần nhất lịch sử?",
-        "options": {
-            "A": "Đức",
-            "B": "Brazil",
-            "C": "Ý",
-            "D": "Argentina"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 14,
-        "question": "Cầu thủ nào đang giữ kỷ lục ghi nhiều bàn thắng nhất trong lịch sử các kỳ World Cup?",
-        "options": {
-            "A": "Miroslav Klose (16 bàn)",
-            "B": "Ronaldo De Lima (15 bàn)",
-            "C": "Pelé (12 bàn)",
-            "D": "Lionel Messi (13 bàn)"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 15,
-        "question": "Trận đấu nào được mệnh danh là 'Trận chiến Nuremberg' với kỷ lục 4 thẻ đỏ và 16 thẻ vàng tại World Cup 2006?",
-        "options": {
-            "A": "Bồ Đào Nha vs Hà Lan",
-            "B": "Đức vs Argentina",
-            "C": "Ý vs Pháp",
-            "D": "Brazil vs Anh"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 16,
-        "question": "World Cup 2026 là kỳ World Cup lịch sử đầu tiên có bao nhiêu đội tuyển tham gia tranh tài?",
+        "question": "World Cup 2026 là kỳ World Cup lịch sử đầu tiên có sự tham gia của bao nhiêu đội tuyển?",
         "options": {
             "A": "32 đội",
             "B": "40 đội",
@@ -203,7 +83,7 @@ QUESTIONS = [
         "time_limit": 20
     },
     {
-        "id": 17,
+        "id": 7,
         "question": "World Cup 2026 được đồng tổ chức bởi liên minh gồm 3 quốc gia nào?",
         "options": {
             "A": "Mỹ, Canada, Mexico",
@@ -215,31 +95,67 @@ QUESTIONS = [
         "time_limit": 20
     },
     {
-        "id": 18,
-        "question": "Mascot (linh vật) chính thức của World Cup 2022 tại Qatar có tên là gì?",
+        "id": 8,
+        "question": "Tổng số trận đấu sẽ được diễn ra tại vòng chung kết World Cup 2026 là bao nhiêu trận?",
         "options": {
-            "A": "La'eeb",
-            "B": "Zabivaka",
-            "C": "Fuleco",
-            "D": "Zakumi"
+            "A": "64 trận",
+            "B": "80 trận",
+            "C": "104 trận",
+            "D": "120 trận"
         },
-        "correct": "A",
+        "correct": "C",
         "time_limit": 20
     },
     {
-        "id": 19,
-        "question": "Sân vận động Azteca lịch sử - nơi từng diễn ra hai trận chung kết World Cup (1970 và 1986) - thuộc quốc gia nào?",
+        "id": 9,
+        "question": "Các đội tuyển tham dự World Cup 2026 được chia thành bao nhiêu bảng đấu tại vòng bảng?",
+        "options": {
+            "A": "8 bảng",
+            "B": "10 bảng",
+            "C": "12 bảng",
+            "D": "16 bảng"
+        },
+        "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 10,
+        "question": "Mỗi bảng đấu tại vòng bảng World Cup 2026 sẽ bao gồm bao nhiêu đội tuyển tranh tài?",
+        "options": {
+            "A": "3 đội",
+            "B": "4 đội",
+            "C": "5 đội",
+            "D": "6 đội"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 11,
+        "question": "Quốc gia nào có nhiều thành phố đăng cai tổ chức các trận đấu World Cup 2026 nhất (với 11 trong tổng số 16 thành phố)?",
         "options": {
             "A": "Mỹ",
             "B": "Canada",
             "C": "Mexico",
             "D": "Brazil"
         },
-        "correct": "C",
+        "correct": "A",
         "time_limit": 20
     },
     {
-        "id": 20,
+        "id": 12,
+        "question": "Trận khai mạc của World Cup 2026 ngày 11/06/2026 sẽ diễn ra tại sân vận động nào ở Mexico?",
+        "options": {
+            "A": "Sân Azteca",
+            "B": "Sân SoFi",
+            "C": "Sân MetLife",
+            "D": "Sân BC Place"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 13,
         "question": "Trận chung kết World Cup 2026 diễn ra vào ngày 19/07/2026 sẽ được tổ chức tại sân vận động nào?",
         "options": {
             "A": "Sân Azteca",
@@ -248,6 +164,90 @@ QUESTIONS = [
             "D": "Sân BC Place"
         },
         "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 14,
+        "question": "Canada đăng cai tổ chức các trận đấu World Cup 2026 tại hai thành phố nào?",
+        "options": {
+            "A": "Toronto và Vancouver",
+            "B": "Montreal và Ottawa",
+            "C": "Calgary và Edmonton",
+            "D": "Quebec và Winnipeg"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 15,
+        "question": "Mexico đăng cai tổ chức các trận đấu World Cup 2026 tại ba thành phố nào?",
+        "options": {
+            "A": "Mexico City, Monterrey, Guadalajara",
+            "B": "Mexico City, Cancun, Tijuana",
+            "C": "Monterrey, Guadalajara, Puebla",
+            "D": "Leon, Merida, Toluca"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 16,
+        "question": "Bài hát chính thức nằm trong album World Cup 2026 do nữ ca sĩ Shakira hợp tác biểu diễn có tên là gì?",
+        "options": {
+            "A": "Waka Waka",
+            "B": "La La La",
+            "C": "Stronger",
+            "D": "We Are One"
+        },
+        "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 17,
+        "question": "Vòng chung kết World Cup 2026 kéo dài trong khoảng thời gian nào?",
+        "options": {
+            "A": "Từ 01/06 đến 30/06/2026",
+            "B": "Từ 11/06 đến 19/07/2026",
+            "C": "Từ 15/06 đến 15/07/2026",
+            "D": "Từ 20/11 đến 18/12/2026"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 18,
+        "question": "Tổng cộng có bao nhiêu sân vận động được sử dụng để tổ chức các trận đấu tại World Cup 2026?",
+        "options": {
+            "A": "12 sân",
+            "B": "16 sân",
+            "C": "18 sân",
+            "D": "20 sân"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 19,
+        "question": "Thành phố nào của Canada có sân vận động BC Place đăng cai tổ chức các trận đấu World Cup 2026?",
+        "options": {
+            "A": "Vancouver",
+            "B": "Toronto",
+            "C": "Montreal",
+            "D": "Edmonton"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 20,
+        "question": "Sân vận động MetLife - nơi tổ chức trận chung kết World Cup 2026 - nằm ở bang nào của nước Mỹ?",
+        "options": {
+            "A": "New York / New Jersey",
+            "B": "California",
+            "C": "Texas",
+            "D": "Florida"
+        },
+        "correct": "A",
         "time_limit": 20
     }
 ]
@@ -419,13 +419,16 @@ class GameStateManager:
             # If the player has already answered the current question
             has_answered = self.current_question_index in player.answers
             q = QUESTIONS[self.current_question_index]
+            q_data = {
+                "text": q["question"],
+                "options": q["options"],
+                "time_limit": q["time_limit"]
+            }
+            if "image_url" in q:
+                q_data["image_url"] = q["image_url"]
             await player.websocket.send_json({
                 "event": "new_question",
-                "question": {
-                    "text": q["question"],
-                    "options": q["options"],
-                    "time_limit": q["time_limit"]
-                },
+                "question": q_data,
                 "question_index": self.current_question_index,
                 "total_questions": len(QUESTIONS),
                 "time_left": self.time_left,
@@ -527,13 +530,16 @@ class GameStateManager:
             self.question_timer_task.cancel()
         
         # Notify players
+        q_data = {
+            "text": q["question"],
+            "options": q["options"],
+            "time_limit": q["time_limit"]
+        }
+        if "image_url" in q:
+            q_data["image_url"] = q["image_url"]
         await self.broadcast_to_players({
             "event": "new_question",
-            "question": {
-                "text": q["question"],
-                "options": q["options"],
-                "time_limit": q["time_limit"]
-            },
+            "question": q_data,
             "question_index": self.current_question_index,
             "total_questions": len(QUESTIONS),
             "time_left": self.time_left,
