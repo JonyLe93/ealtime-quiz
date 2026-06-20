@@ -55,22 +55,24 @@ async def websocket_player(websocket: WebSocket):
     except WebSocketDisconnect:
         if player_id and player_id in manager.players:
             player = manager.players[player_id]
-            player.active = False
-            player.websocket = None
-            
-            # Notify host and other players about the disconnection
-            await manager.send_host_update()
-            await manager.broadcast_to_players({
-                "event": "lobby_update",
-                "active_players": sum(1 for p in manager.players.values() if p.active)
-            })
+            if player.websocket == websocket:
+                player.active = False
+                player.websocket = None
+                
+                # Notify host and other players about the disconnection
+                await manager.send_host_update()
+                await manager.broadcast_to_players({
+                    "event": "lobby_update",
+                    "active_players": sum(1 for p in manager.players.values() if p.active)
+                })
             
     except Exception as e:
         print(f"Error on player websocket: {e}")
         if player_id and player_id in manager.players:
             player = manager.players[player_id]
-            player.active = False
-            player.websocket = None
+            if player.websocket == websocket:
+                player.active = False
+                player.websocket = None
 
 @app.websocket("/ws/host")
 async def websocket_host(websocket: WebSocket):
@@ -99,7 +101,9 @@ async def websocket_host(websocket: WebSocket):
                 })
                 
     except WebSocketDisconnect:
-        manager.host_websocket = None
+        if manager.host_websocket == websocket:
+            manager.host_websocket = None
     except Exception as e:
         print(f"Error on host websocket: {e}")
-        manager.host_websocket = None
+        if manager.host_websocket == websocket:
+            manager.host_websocket = None

@@ -4,6 +4,8 @@ let playerName = localStorage.getItem("quiz_player_name") || null;
 let questionStartTime = null;
 let timerInterval = null;
 let hasAnswered = false;
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 3;
 
 // Elements
 const views = {
@@ -62,6 +64,8 @@ function connectWebSocket(name) {
     socket = new WebSocket(wsUrl);
     
     socket.onopen = () => {
+        reconnectAttempts = 0;
+        hideReconnectToast();
         // Send join event
         socket.send(JSON.stringify({
             event: "join",
@@ -79,19 +83,29 @@ function connectWebSocket(name) {
         console.log("WebSocket closed", event);
         // Only show error view if we weren't intentionally leaving
         if (socket && !event.wasClean) {
-            document.getElementById("error-message").textContent = "Mất kết nối với máy chủ quiz.";
-            showView("error");
+            if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                reconnectAttempts++;
+                showReconnectToast(`Mất kết nối. Đang tự động kết nối lại (Lần ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS})...`);
+                setTimeout(() => {
+                    if (playerName) connectWebSocket(playerName);
+                }, 2000);
+            } else {
+                hideReconnectToast();
+                document.getElementById("error-message").textContent = "Mất kết nối với máy chủ quiz.";
+                showView("error");
+            }
         }
     };
     
     socket.onerror = (error) => {
         console.error("WebSocket error", error);
-        document.getElementById("error-message").textContent = "Không thể kết nối đến máy chủ quiz.";
-        showView("error");
+        // Let onclose handler manage the reconnection
     };
 }
 
 function attemptReconnect() {
+    reconnectAttempts = 0;
+    hideReconnectToast();
     if (playerName) {
         connectWebSocket(playerName);
     } else {
@@ -328,4 +342,35 @@ function escapeHtml(str) {
         .replace(/>/g, "&gt;")
         .replace(/"/g, "&quot;")
         .replace(/'/g, "&#039;");
+}
+
+function showReconnectToast(message) {
+    let toast = document.getElementById("reconnect-toast");
+    if (!toast) {
+        toast = document.createElement("div");
+        toast.id = "reconnect-toast";
+        toast.style.position = "fixed";
+        toast.style.top = "20px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = "rgba(255, 193, 7, 0.95)";
+        toast.style.color = "#121240";
+        toast.style.padding = "10px 20px";
+        toast.style.borderRadius = "30px";
+        toast.style.fontWeight = "600";
+        toast.style.fontSize = "0.9rem";
+        toast.style.boxShadow = "0 4px 15px rgba(0,0,0,0.35)";
+        toast.style.zIndex = "9999";
+        toast.style.textAlign = "center";
+        toast.style.pointerEvents = "none";
+        document.body.appendChild(toast);
+    }
+    toast.textContent = message;
+}
+
+function hideReconnectToast() {
+    const toast = document.getElementById("reconnect-toast");
+    if (toast) {
+        toast.remove();
+    }
 }

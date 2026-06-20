@@ -3,6 +3,8 @@ let roomState = "LOBBY";
 let totalQuestions = 15;
 let currentQuestionIndex = -1;
 let players = [];
+let reconnectAttempts = 0;
+const MAX_RECONNECT_ATTEMPTS = 5;
 
 // Elements
 const views = {
@@ -69,6 +71,7 @@ function connectWebSocket() {
     socket = new WebSocket(wsUrl);
     
     socket.onopen = () => {
+        reconnectAttempts = 0;
         console.log("Host WebSocket connection open");
     };
     
@@ -80,14 +83,22 @@ function connectWebSocket() {
     socket.onclose = (event) => {
         console.log("Host WebSocket closed", event);
         if (!event.wasClean) {
-            showView("error");
-            document.getElementById("host-error-message").textContent = "Mất kết nối với máy chủ Quiz.";
+            if (reconnectAttempts < MAX_RECONNECT_ATTEMPTS) {
+                reconnectAttempts++;
+                console.log(`Host connection lost. Reconnecting attempt ${reconnectAttempts}/${MAX_RECONNECT_ATTEMPTS}...`);
+                setTimeout(() => {
+                    connectWebSocket();
+                }, 2000);
+            } else {
+                showView("error");
+                document.getElementById("host-error-message").textContent = "Mất kết nối với máy chủ Quiz.";
+            }
         }
     };
     
     socket.onerror = (error) => {
         console.error("Host WebSocket error", error);
-        showView("error");
+        // let onclose handle the reconnection retry
     };
 }
 

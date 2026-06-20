@@ -258,13 +258,15 @@ class GameStateManager:
         """Sends a JSON message to all active players."""
         disconnected = []
         for p_id, player in self.players.items():
-            if player.active and player.websocket:
+            ws = player.websocket
+            if player.active and ws:
                 try:
-                    await player.websocket.send_json(message)
+                    await ws.send_json(message)
                 except Exception:
-                    player.active = False
-                    player.websocket = None
-                    disconnected.append(p_id)
+                    if player.websocket == ws:
+                        player.active = False
+                        player.websocket = None
+                        disconnected.append(p_id)
         if disconnected and self.host_websocket:
             await self.send_host_update()
 
@@ -498,10 +500,11 @@ class GameStateManager:
         
         # Send result to each player customized with their score/rank
         for player_id, player in self.players.items():
-            if player.active and player.websocket:
+            ws = player.websocket
+            if player.active and ws:
                 ans_info = player.answers.get(self.current_question_index, {})
                 try:
-                    await player.websocket.send_json({
+                    await ws.send_json({
                         "event": "question_end",
                         "correct_answer": q["correct"],
                         "correct_text": q["options"][q["correct"]],
@@ -512,8 +515,9 @@ class GameStateManager:
                         "rank": self.get_player_rank(player_id)
                     })
                 except Exception:
-                    player.active = False
-                    player.websocket = None
+                    if player.websocket == ws:
+                        player.active = False
+                        player.websocket = None
 
         # Send update to host with stats and leaderboard
         await self.send_host_update()
@@ -538,17 +542,19 @@ class GameStateManager:
             
             # Notify players game is over
             for player_id, player in self.players.items():
-                if player.active and player.websocket:
+                ws = player.websocket
+                if player.active and ws:
                     try:
-                        await player.websocket.send_json({
+                        await ws.send_json({
                             "event": "game_over",
                             "leaderboard": leaderboard[:5],
                             "final_rank": self.get_player_rank(player_id),
                             "final_score": player.score
                         })
                     except Exception:
-                        player.active = False
-                        player.websocket = None
+                        if player.websocket == ws:
+                            player.active = False
+                            player.websocket = None
             
             # Notify host
             await self.send_host_update()
