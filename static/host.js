@@ -190,6 +190,18 @@ function updateHostState(data) {
             document.getElementById("host-opt-b").textContent = data.question.options.B;
             document.getElementById("host-opt-c").textContent = data.question.options.C;
             document.getElementById("host-opt-d").textContent = data.question.options.D;
+            
+            // Set image if present
+            const imgEl = document.getElementById("host-q-image");
+            if (imgEl) {
+                if (data.question.image_url) {
+                    imgEl.src = data.question.image_url;
+                    imgEl.style.display = "block";
+                } else {
+                    imgEl.src = "";
+                    imgEl.style.display = "none";
+                }
+            }
         }
 
         // Animate timer progress bar
@@ -240,6 +252,18 @@ function showAnswerReveal(data) {
     
     const q = data.question;
     document.getElementById("reveal-q-title").textContent = q.question;
+    
+    // Set image if present
+    const imgEl = document.getElementById("reveal-q-image");
+    if (imgEl) {
+        if (q.image_url) {
+            imgEl.src = q.image_url;
+            imgEl.style.display = "block";
+        } else {
+            imgEl.src = "";
+            imgEl.style.display = "none";
+        }
+    }
     
     // Set response option texts
     document.getElementById("reveal-text-a").textContent = q.options.A;

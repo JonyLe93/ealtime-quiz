@@ -179,6 +179,18 @@ function setupQuestion(data) {
     document.getElementById("question-total").textContent = data.total_questions;
     document.getElementById("question-title").textContent = data.question.text;
     
+    // Set image if present
+    const imgEl = document.getElementById("question-image");
+    if (imgEl) {
+        if (data.question.image_url) {
+            imgEl.src = data.question.image_url;
+            imgEl.style.display = "block";
+        } else {
+            imgEl.src = "";
+            imgEl.style.display = "none";
+        }
+    }
+    
     // Set options
     document.getElementById("text-opt-a").textContent = data.question.options.A;
     document.getElementById("text-opt-b").textContent = data.question.options.B;

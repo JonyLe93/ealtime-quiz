@@ -1,36 +1,198 @@
 import time
 import asyncio
+import random
 from typing import Dict, List, Optional
 from fastapi import WebSocket
 
 QUESTIONS = [
     {
         "id": 1,
-        "question": "World Cup 2026 được đồng tổ chức bởi những quốc gia nào?",
+        "question": "Đây là lá cờ của quốc gia nào?",
         "options": {
-            "A": "Mỹ, Canada, Mexico",
-            "B": "Mỹ, Brazil, Argentina",
-            "C": "Tây Ban Nha, Bồ Đào Nha, Maroc",
-            "D": "Nhật Bản, Hàn Quốc, Úc"
+            "A": "Brazil",
+            "B": "Argentina",
+            "C": "Đức",
+            "D": "Tây Ban Nha"
         },
         "correct": "A",
-        "time_limit": 20
+        "time_limit": 20,
+        "image_url": "https://flagcdn.com/w320/br.png"
     },
     {
         "id": 2,
-        "question": "Trận đấu khai mạc World Cup 2026 diễn ra tại sân vận động nào?",
+        "question": "Đây là lá cờ của quốc gia nào?",
         "options": {
-            "A": "Sân vận động Azteca (Mexico)",
-            "B": "Sân vận động SoFi (Mỹ)",
-            "C": "Sân vận động BC Place (Canada)",
-            "D": "Sân vận động MetLife (Mỹ)"
+            "A": "Nhật Bản",
+            "B": "Hàn Quốc",
+            "C": "Trung Quốc",
+            "D": "Việt Nam"
+        },
+        "correct": "B",
+        "time_limit": 20,
+        "image_url": "https://flagcdn.com/w320/kr.png"
+    },
+    {
+        "id": 3,
+        "question": "Đây là lá cờ của quốc gia nào?",
+        "options": {
+            "A": "Colombia",
+            "B": "Bồ Đào Nha",
+            "C": "Ý",
+            "D": "Pháp"
+        },
+        "correct": "B",
+        "time_limit": 20,
+        "image_url": "https://flagcdn.com/w320/pt.png"
+    },
+    {
+        "id": 4,
+        "question": "Đây là lá cờ của quốc gia nào?",
+        "options": {
+            "A": "Croatia",
+            "B": "Pháp",
+            "C": "Anh",
+            "D": "Panama"
+        },
+        "correct": "A",
+        "time_limit": 20,
+        "image_url": "https://flagcdn.com/w320/hr.png"
+    },
+    {
+        "id": 5,
+        "question": "Đây là lá cờ của quốc gia nào?",
+        "options": {
+            "A": "Đức",
+            "B": "Ecuador",
+            "C": "Bỉ",
+            "D": "Hà Lan"
+        },
+        "correct": "A",
+        "time_limit": 20,
+        "image_url": "https://flagcdn.com/w320/de.png"
+    },
+    {
+        "id": 6,
+        "question": "Bài hát chính thức 'Waka Waka (This Time for Africa)' của kỳ World Cup 2010 do nữ ca sĩ nào thể hiện?",
+        "options": {
+            "A": "Shakira",
+            "B": "Rihanna",
+            "C": "Beyonce",
+            "D": "Adele"
         },
         "correct": "A",
         "time_limit": 20
     },
     {
-        "id": 3,
-        "question": "World Cup 2026 là kỳ World Cup đầu tiên có bao nhiêu đội tuyển tham dự?",
+        "id": 7,
+        "question": "Ca khúc 'The Cup of Life' (La Copa de la Vida) - bài hát World Cup kinh điển năm 1998 do nam ca sĩ nào trình bày?",
+        "options": {
+            "A": "Ricky Martin",
+            "B": "Enrique Iglesias",
+            "C": "Pitbull",
+            "D": "Marc Anthony"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 8,
+        "question": "Bài hát chính thức nằm trong album World Cup 2026 do nữ ca sĩ Shakira hợp tác biểu diễn có tên là gì?",
+        "options": {
+            "A": "Waka Waka",
+            "B": "La La La",
+            "C": "Stronger",
+            "D": "We Are One"
+        },
+        "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 9,
+        "question": "Bài hát chính thức 'We Are One (Ole Ola)' của World Cup 2014 tại Brazil do Pitbull, Jennifer Lopez và nghệ sĩ nào thể hiện?",
+        "options": {
+            "A": "Shakira",
+            "B": "Claudia Leitte",
+            "C": "Rihanna",
+            "D": "Beyonce"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 10,
+        "question": "Bản tình ca bóng đá huyền thoại 'Un'estate italiana' (Mùa hè nước Ý) - bài hát chính thức của World Cup 1990 do cặp song ca nào thể hiện?",
+        "options": {
+            "A": "Gianna Nannini & Edoardo Bennato",
+            "B": "Andrea Bocelli & Sarah Brightman",
+            "C": "Luciano Pavarotti & Jose Carreras",
+            "D": "Eros Ramazzotti & Laura Pausini"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 11,
+        "question": "Quốc gia nào đăng cai kỳ World Cup đầu tiên vào năm 1930?",
+        "options": {
+            "A": "Brazil",
+            "B": "Uruguay",
+            "C": "Argentina",
+            "D": "Pháp"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 12,
+        "question": "Cúp vàng FIFA World Cup hiện tại được chế tác chủ yếu bằng chất liệu gì?",
+        "options": {
+            "A": "Vàng 18 carat",
+            "B": "Vàng ròng nguyên chất",
+            "C": "Bạc mạ vàng",
+            "D": "Bạch kim"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 13,
+        "question": "Đội tuyển quốc gia nào vô địch World Cup nhiều lần nhất lịch sử?",
+        "options": {
+            "A": "Đức",
+            "B": "Brazil",
+            "C": "Ý",
+            "D": "Argentina"
+        },
+        "correct": "B",
+        "time_limit": 20
+    },
+    {
+        "id": 14,
+        "question": "Cầu thủ nào đang giữ kỷ lục ghi nhiều bàn thắng nhất trong lịch sử các kỳ World Cup?",
+        "options": {
+            "A": "Miroslav Klose (16 bàn)",
+            "B": "Ronaldo De Lima (15 bàn)",
+            "C": "Pelé (12 bàn)",
+            "D": "Lionel Messi (13 bàn)"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 15,
+        "question": "Trận đấu nào được mệnh danh là 'Trận chiến Nuremberg' với kỷ lục 4 thẻ đỏ và 16 thẻ vàng tại World Cup 2006?",
+        "options": {
+            "A": "Bồ Đào Nha vs Hà Lan",
+            "B": "Đức vs Argentina",
+            "C": "Ý vs Pháp",
+            "D": "Brazil vs Anh"
+        },
+        "correct": "A",
+        "time_limit": 20
+    },
+    {
+        "id": 16,
+        "question": "World Cup 2026 là kỳ World Cup lịch sử đầu tiên có bao nhiêu đội tuyển tham gia tranh tài?",
         "options": {
             "A": "32 đội",
             "B": "40 đội",
@@ -41,207 +203,51 @@ QUESTIONS = [
         "time_limit": 20
     },
     {
-        "id": 4,
-        "question": "Các đội tuyển tại World Cup 2026 được chia thành bao nhiêu bảng đấu?",
-        "options": {
-            "A": "8 bảng",
-            "B": "10 bảng",
-            "C": "12 bảng",
-            "D": "16 bảng"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 5,
-        "question": "Trong lượt trận thứ nhất của bảng A, đội chủ nhà Mexico đã giành chiến thắng trước đối thủ nào với tỷ số 2-0?",
-        "options": {
-            "A": "Cộng hòa Séc",
-            "B": "Hàn Quốc",
-            "C": "Nam Phi",
-            "D": "Canada"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 6,
-        "question": "Kết quả trận đấu khai màn của đội chủ nhà Canada trước Bosnia & Herzegovina tại bảng B là gì?",
-        "options": {
-            "A": "Canada thắng 2-1",
-            "B": "Hòa 1-1",
-            "C": "Canada thua 0-1",
-            "D": "Hòa 0-0"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 7,
-        "question": "Đội tuyển chủ nhà thứ ba là Mỹ (USA) đã giành chiến thắng thuyết phục bao nhiêu trước Paraguay ở lượt trận đầu tiên bảng D?",
-        "options": {
-            "A": "2-0",
-            "B": "3-1",
-            "C": "4-1",
-            "D": "5-0"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 8,
-        "question": "Cơn mưa bàn thắng lớn nhất ở lượt trận đầu tiên thuộc về trận thắng 7-1 của Đức ở bảng E. Đối thủ của họ là ai?",
-        "options": {
-            "A": "Ecuador",
-            "B": "Curaçao",
-            "C": "Bờ Biển Ngà",
-            "D": "Thụy Sĩ"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 9,
-        "question": "Đội tuyển châu Á nào đã xuất sắc đánh bại Cộng hòa Séc với tỷ số 2-1 ở bảng A trong lượt trận đầu tiên?",
-        "options": {
-            "A": "Nhật Bản",
-            "B": "Hàn Quốc",
-            "C": "Ả Rập Xê Út",
-            "D": "Úc"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 10,
-        "question": "Ở bảng C, nhà vô địch World Cup 5 lần là Brazil đã có kết quả như thế nào trước đại diện châu Phi Morocco ở trận mở màn?",
-        "options": {
-            "A": "Brazil thắng 3-0",
-            "B": "Brazil thua 1-2",
-            "C": "Hòa 1-1",
-            "D": "Hòa 0-0"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 11,
-        "question": "Tại bảng D, đại diện nào của châu Đại Dương (nhưng thi đấu thuộc LĐBĐ châu Á) đã giành chiến thắng 2-0 trước Thổ Nhĩ Kỳ?",
-        "options": {
-            "A": "New Zealand",
-            "B": "Australia",
-            "C": "Iraq",
-            "D": "Uzbekistan"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 12,
-        "question": "Kỳ World Cup 2026 diễn ra trong khoảng thời gian nào?",
-        "options": {
-            "A": "Từ 11/06 đến 19/07/2026",
-            "B": "Từ 01/06 đến 30/06/2026",
-            "C": "Từ 20/11 đến 18/12/2026",
-            "D": "Từ 15/06 đến 15/07/2026"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 13,
-        "question": "Đội tuyển nào ở bảng C đã giành trọn 3 điểm ở lượt trận thứ nhất sau khi thắng tối thiểu Haiti 1-0?",
-        "options": {
-            "A": "Brazil",
-            "B": "Scotland",
-            "C": "Morocco",
-            "D": "Tây Ban Nha"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
-        "id": 14,
-        "question": "Hai đội tuyển nào ở bảng B đã cầm chân nhau với tỷ số hòa 1-1 ở lượt trận đầu tiên ngoài Canada và Bosnia?",
-        "options": {
-            "A": "Thụy Sĩ và Qatar",
-            "B": "Đức và Ecuador",
-            "C": "Bỉ và Ai Cập",
-            "D": "Tây Ban Nha và Saudi Arabia"
-        },
-        "correct": "A",
-        "time_limit": 20
-    },
-    {
-        "id": 15,
-        "question": "Tính đến hết lượt trận thứ 1 của vòng bảng, đội tuyển nào đã giành chiến thắng ở lượt trận 2 (gặp Hàn Quốc) để trở thành đội đầu tiên chính thức lọt vào vòng knock-out?",
-        "options": {
-            "A": "Mỹ",
-            "B": "Đức",
-            "C": "Mexico",
-            "D": "Argentina"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 16,
-        "question": "Bài hát chính thức nằm trong album World Cup 2026 do nữ ca sĩ Shakira hợp tác biểu diễn có tên là gì?",
-        "options": {
-            "A": "Waka Waka",
-            "B": "Stronger",
-            "C": "La La La",
-            "D": "We Are One"
-        },
-        "correct": "B",
-        "time_limit": 20
-    },
-    {
         "id": 17,
-        "question": "Tính đến hết lượt trận 1 vòng bảng, những cầu thủ nào đang dẫn đầu danh sách ghi bàn của World Cup 2026 với 3 bàn thắng?",
+        "question": "World Cup 2026 được đồng tổ chức bởi liên minh gồm 3 quốc gia nào?",
         "options": {
-            "A": "Kylian Mbappé và Erling Haaland",
-            "B": "Lionel Messi và Jonathan David",
-            "C": "Harry Kane và Kai Havertz",
-            "D": "Folarin Balogun và Cristiano Ronaldo"
+            "A": "Mỹ, Canada, Mexico",
+            "B": "Tây Ban Nha, Bồ Đào Nha, Maroc",
+            "C": "Nhật Bản, Hàn Quốc, Úc",
+            "D": "Argentina, Uruguay, Paraguay"
         },
-        "correct": "B",
+        "correct": "A",
         "time_limit": 20
     },
     {
         "id": 18,
-        "question": "Trận khai mạc kịch tính giữa Mexico và Nam Phi tại bảng A đã chứng kiến trọng tài rút ra tổng cộng bao nhiêu tấm thẻ đỏ?",
+        "question": "Mascot (linh vật) chính thức của World Cup 2022 tại Qatar có tên là gì?",
         "options": {
-            "A": "1 thẻ đỏ",
-            "B": "2 thẻ đỏ",
-            "C": "3 thẻ đỏ",
-            "D": "4 thẻ đỏ"
-        },
-        "correct": "C",
-        "time_limit": 20
-    },
-    {
-        "id": 19,
-        "question": "Quốc kỳ của quốc gia nào tham dự ở bảng H nổi bật với nền màu xanh lá cây, ở giữa có hình một thanh kiếm màu trắng nằm ngang dưới dòng chữ tiếng Ả Rập?",
-        "options": {
-            "A": "Saudi Arabia",
-            "B": "Morocco",
-            "C": "Algeria",
-            "D": "Qatar"
+            "A": "La'eeb",
+            "B": "Zabivaka",
+            "C": "Fuleco",
+            "D": "Zakumi"
         },
         "correct": "A",
         "time_limit": 20
     },
     {
-        "id": 20,
-        "question": "Quốc kỳ của nước chủ nhà Canada nổi bật với ba sọc đứng (Đỏ - Trắng - Đỏ) và hình biểu tượng gì màu đỏ nằm chính giữa?",
+        "id": 19,
+        "question": "Sân vận động Azteca lịch sử - nơi từng diễn ra hai trận chung kết World Cup (1970 và 1986) - thuộc quốc gia nào?",
         "options": {
-            "A": "Ngôi sao năm cánh",
-            "B": "Lá phong",
-            "C": "Con chim hải âu",
-            "D": "Thanh gươm thần"
+            "A": "Mỹ",
+            "B": "Canada",
+            "C": "Mexico",
+            "D": "Brazil"
         },
-        "correct": "B",
+        "correct": "C",
+        "time_limit": 20
+    },
+    {
+        "id": 20,
+        "question": "Trận chung kết World Cup 2026 diễn ra vào ngày 19/07/2026 sẽ được tổ chức tại sân vận động nào?",
+        "options": {
+            "A": "Sân Azteca",
+            "B": "Sân SoFi",
+            "C": "Sân MetLife",
+            "D": "Sân BC Place"
+        },
+        "correct": "C",
         "time_limit": 20
     }
 ]
@@ -264,6 +270,7 @@ class GameStateManager:
         self.question_timer_task: Optional[asyncio.Task] = None
         self.time_left: int = 0
         self.host_websocket: Optional[WebSocket] = None
+        random.shuffle(QUESTIONS)
 
     def reset_game(self):
         self.state = "LOBBY"
@@ -275,6 +282,7 @@ class GameStateManager:
         for player in self.players.values():
             player.score = 0
             player.answers = {}
+        random.shuffle(QUESTIONS)
 
     def get_player_list(self) -> List[dict]:
         """Returns player information for the host dashboard."""
@@ -349,6 +357,8 @@ class GameStateManager:
                 "time_limit": q["time_limit"],
                 "correct": q["correct"]
             }
+            if "image_url" in q:
+                q_data["image_url"] = q["image_url"]
 
         await self.send_to_host({
             "event": "host_update",

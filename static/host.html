@@ -57,7 +57,7 @@
             <section id="host-question" class="view-section">
                 <div class="question-header">
                     <div class="question-counter" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
-                        Câu hỏi <span id="host-q-num">1</span>/<span id="host-q-total">15</span>
+                        Câu hỏi <span id="host-q-num">1</span>/<span id="host-q-total">20</span>
                     </div>
                     <div class="timer-badge" style="font-size: 1.1rem; padding: 0.5rem 1rem;">
                         <span>⏱️</span>
@@ -69,6 +69,7 @@
                     <div id="host-timer-progress" class="progress-bar"></div>
                 </div>
 
+                <img id="host-q-image" src="" alt="Hình ảnh câu hỏi" style="display: none; max-width: 100%; max-height: 180px; object-fit: contain; border-radius: 12px; margin: 0 auto 1.5rem; border: 2px solid rgba(255,255,255,0.15); box-shadow: 0 4px 15px rgba(0,0,0,0.3);">
                 <h2 id="host-q-title" class="question-text" style="font-size: 1.8rem; margin: 1.5rem 0;">Câu hỏi ở đây?</h2>
                 
                 <!-- Hiển thị các đáp án của câu hỏi -->
@@ -107,6 +108,7 @@
 
             <!-- 3. MÀN HÌNH BÁO CÁO CÂU TRẢ LỜI (ANSWER REVEAL) -->
             <section id="host-reveal" class="view-section">
+                <img id="reveal-q-image" src="" alt="Hình ảnh câu hỏi" style="display: none; max-width: 100%; max-height: 140px; object-fit: contain; border-radius: 12px; margin: 0 auto 1rem; border: 2px solid rgba(255,255,255,0.15);">
                 <h2 id="reveal-q-title" style="font-size: 1.5rem; text-align: center; margin-bottom: 1.5rem;">Câu hỏi đã kết thúc</h2>
 
                 <!-- Biểu đồ cột thể hiện kết quả -->
